@@ -34,7 +34,7 @@ jobs:
           context: ./
           file: ./Dockerfile
           push: true
-          tags: jjuless/isaac-sonsor-back-end:latest
+          tags: jjuless/isaac-sensor-back-end:latest
 
       - name: Image digest
         run: echo ${{ steps.docker_build.outputs.digest }}
