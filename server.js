@@ -32,20 +32,3 @@ const PORT = process.env.PORT || 3001;
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}.`);
 });
-
-const WebSocket = require('ws')
-const url = 'ws://localhost:2020'
-const connection = new WebSocket(url)
-
-connection.onopen = () => {
-    connection.send('Message From Client')
-}
-
-connection.onerror = (error) => {
-    console.log(`WebSocket error: ${error}`)
-}
-
-connection.onmessage = (e) => {
-    console.log("--------------------------------")
-    console.log(e.data)
-}
