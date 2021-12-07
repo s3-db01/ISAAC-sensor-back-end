@@ -15,7 +15,7 @@ app.use(express.json());
 // parse requests of content-type - application/x-www-form-urlencoded
 app.use(express.urlencoded({ extended: true }));
 
-const db = require("./app/models");
+const db = require("./models");
 db.sequelize.sync({ force: true }).then(() => {
     console.log("Drop and re-sync db.");
 });
@@ -25,7 +25,7 @@ app.get("/", (req, res) => {
     res.json({ message: "Hello User!" });
 });
 
-require("./app/routes/sensor.routes")(app);
+require("./routes/sensor.routes")(app);
 
 // set port, listen for requests
 const PORT = process.env.PORT || 3001;

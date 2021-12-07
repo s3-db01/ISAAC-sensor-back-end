@@ -10,10 +10,10 @@ module.exports = app => {
     router.get("/", sensors.findAll);
 
     // Retrieve a single Sensor with id
-    router.get("/:id", sensors.findOne);
+    router.get("/:id/", sensors.findOne);
 
     // Update a Sensor with id
-    router.put("/:id", sensors.update);
+    router.put("/:id/", sensors.update);
 
     // Delete a Sensor with id
     router.delete("/:id", sensors.delete);

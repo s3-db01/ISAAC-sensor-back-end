@@ -50,7 +50,14 @@ exports.findAll = (req, res) => {
 exports.findOne = (req, res) => {
     const id = req.params.id;
 
-    Sensor.findByPk(id)
+    const coordinates = id.split('-')
+
+    Sensor.findAll({
+        where: {
+            x_coordinate: coordinates[0],
+            y_coordinate: coordinates[1]
+        }
+    })
         .then(data => {
             if (data) {
                 res.send(data);
@@ -71,50 +78,70 @@ exports.findOne = (req, res) => {
 exports.update = (req, res) => {
     const id = req.params.id;
 
-    Sensor.update(req.body, {
-        where: { id: id }
+    const coordinates = id.split('-')
+
+    console.log(req.body.flagged_faulty + " " + id)
+
+    Sensor.update(
+        { flagged_faulty: req.body.flagged_faulty },
+        {
+            where: {
+                x_coordinate: parseInt(coordinates[0]),
+                y_coordinate:  parseInt(coordinates[1])
+        }
     })
-        .then(num => {
-            if (num === 1) {
-                res.send({
-                    message: "Sensor was updated successfully."
-                });
-            } else {
-                res.send({
-                    message: `Cannot update Sensor with id=${id}. Maybe Tutorial was not found or req.body is empty!`
-                });
-            }
-        })
-        .catch(err => {
-            res.status(500).send({
-                message: "Error updating Sensor with id=" + id
+    .then(num => {
+        console.log(num)
+        if (num[0] === 1) {
+            res.send({
+                message: "Sensor was updated successfully."
             });
+        } else {
+            res.send({
+                message: `Cannot update Sensor with id=${id}. Maybe sensor was not found or req.body is empty!`
+            });
+        }
+    })
+    .catch(err => {
+        console.log(err);
+        res.status(500).send({
+            message: "Error updating Sensor with id=" + id
+            
         });
+    });
 };
 
 // Delete a Sensor with the specified id in the request
 exports.delete = (req, res) => {
     const id = req.params.id;
 
-    Sensor.destroy({
-        where: { id: id }
+    const coordinates = id.split('-')
+
+    console.log(id)
+
+    Sensor.destroy(
+        {
+            where: {
+                x_coordinate: parseInt(coordinates[0]),
+                y_coordinate:  parseInt(coordinates[1])
+        }
     })
-        .then(num => {
-            if (num === 1) {
-                res.send({
-                    message: "Sensor was deleted successfully!"
-                });
-            } else {
-                res.send({
-                    message: `Cannot delete Sensor with id=${id}. Maybe Tutorial was not found!`
-                });
-            }
-        })
-        .catch(err => {
-            res.status(500).send({
-                message: "Could not delete Sensor with id=" + id
+    .then(num => {
+        if (num === 1) {
+            res.send({
+                message: "Sensor was deleted successfully!"
             });
+        } else {
+            res.send({
+                message: `Cannot delete Sensor with id=${id}. Maybe Sensor was not found!`
+            });
+        }
+    })
+    .catch(err => {
+        res.status(500).send({
+            message: "Could not delete Sensor with id=" + id
         });
+    });
 };
 
 // Delete all Sensor from the database.
@@ -124,7 +151,7 @@ exports.deleteAll = (req, res) => {
         truncate: false
     })
         .then(nums => {
-            res.send({ message: `${nums} Sensor were deleted successfully!` });
+            res.send({ message: `${nums} Sensors were deleted successfully!` });
         })
         .catch(err => {
             res.status(500).send({
