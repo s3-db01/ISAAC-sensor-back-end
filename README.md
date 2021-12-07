@@ -1,5 +1,4 @@
 ## Sensor API
-
 | **Route** | **Action** | **Body**                                                                           | **Method** |
 | --- | --- |------------------------------------------------------------------------------------|-----------|
 | api/sensors/ | Create | {floor_id : int, x_coordinate : int, y_coordinate : int, flagged_faulty : int}     | Post      |
