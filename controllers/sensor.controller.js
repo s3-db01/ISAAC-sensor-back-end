@@ -22,7 +22,7 @@ exports.create = (req, res) => {
     // Save Sensor in the database
     Sensor.create(sensor)
         .then(data => {
-            res.send(data);
+            res.status(201).send(data);
         })
         .catch(err => {
             res.status(500).send({

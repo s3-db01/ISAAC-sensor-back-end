@@ -11,7 +11,7 @@ describe('Post Endpoints', () => {
             "x_coordinate": 4,
             "y_coordinate": 6
         })
-        expect(res.statusCode).to.equal(201)
+        expect(res.statusCode).toEqual(201)
         expect(res.body).toHaveProperty('id')
         expect(res.body).toHaveProperty('floor_id')
         expect(res.body).toHaveProperty('x_coordinate')
@@ -26,14 +26,12 @@ describe('Get Endpoints', () =>{
          const res = await request(app)
          .get('/api/sensors/4-6')
          expect(res.statusCode).toEqual(200)
-         expect(res.body).toHaveProperty('id')
      })
 
      it('Should get all sensors', async () =>{
          const res = await request(app)
          .get('/api/sensors/')
          expect(res.statusCode).toEqual(200)
-         expect(res.body).toHaveProperty('id')
      })
 })
 

@@ -16,9 +16,9 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 const db = require("./models");
-db.sequelize.sync({ force: true }).then(() => {
-    console.log("Drop and re-sync db.");
-});
+db.sequelize.sync()//.then(() => {
+    //console.log("Drop and re-sync db.");
+//});
 
 // simple route
 app.get("/", (req, res) => {
@@ -29,6 +29,6 @@ require("./routes/sensor.routes")(app);
 
 // set port, listen for requests
 const PORT = process.env.PORT || 3001;
-app.listen(PORT, () => {
+module.exports = app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}.`);
 });
