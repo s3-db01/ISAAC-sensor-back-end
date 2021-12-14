@@ -1,0 +1,231 @@
+openapi: '3.0.0'
+info:
+  title: ISAAC sensor API
+  version: '1.0'
+servers:
+  - url: localhost:3001/api
+paths:
+  /sensors/{id}:
+    get:
+      summary: Get Sensor
+      description: Gets a Sensor by supplierd ID in the URL.
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+            example: 1
+            minimum: 1
+          required: true
+          description: Numeric ID of the Sensor to get.
+      responses:
+        '200':
+          description: Successfull GET response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Sensor'
+        '404':
+          $ref: '#/components/responses/NotFound'
+          
+        '5XX':
+            $ref: '#/components/responses/ServerError'
+
+    put:
+      summary: Update Sensor
+      description: Updates a sensor by sensor ID in the URL.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+          example: 1
+          minimum: 1
+        required: true
+        description: Numeric ID of the sensor to update.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Sensor'
+      responses:
+        '200':
+          description: Successfull PUT response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        '400':
+          $ref: '#/components/responses/InvalidRequest'
+
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+        '5XX':
+          $ref: '#/components/responses/ServerError'
+
+    delete:
+      summary: Delete Sensor
+      description: Deletes a sensor by sensor ID in ther URL.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+          example: 1
+          minimum: 1
+        required: true
+        description: Numeric ID of the sensor to delete.
+      responses:
+        '200':
+          description: Successfull DELETE response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '5XX':
+          $ref: '#/components/responses/ServerError'
+
+  /sensors:
+    get:
+      summary: Get sensors list.
+      description: Get all the sensors in a list.
+      responses:
+        '200':
+          description: Successfull GET response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Sensors'
+
+        '5XX':
+          $ref: '#/components/responses/ServerError'
+
+    post:
+      summary: Create Sensor
+      description: Creates a sensor with the parameters specified in the request body.
+      requestBody:
+        description: This is the sensor object.
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              $ref: '#/components/schemas/Sensor'
+
+      responses:
+        '201':
+          description: Successfull POST response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Sensor'
+                type: object
+
+        '400':
+          $ref: '#/components/responses/InvalidRequest'
+
+        '5XX':
+          $ref: '#/components/responses/ServerError'
+    
+    delete:
+      summary: Delete all Sensors
+      description: Deletes all the sensors in the database, there is no undoing this action.
+      responses:
+        '200':
+          description: Successfull DELETE response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+
+        '5XX':
+          $ref: '#/components/responses/ServerError'
+
+components:
+  schemas:
+    Sensors:
+      description: Array of sensor information
+      type: array
+      items:
+        $ref: '#/components/schemas/Sensor'
+    Sensor:
+      description: Model containing sensor information
+      title: Sensor
+      required:
+        - floor_id
+        - x_coordinate
+        - y_coordinate
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        
+        floor_id:
+          type: integer
+          example: 3
+      
+        x_coordinate:
+          type: integer
+          example: 4
+
+        y_coordinate:
+          type: integer
+          example: 8
+
+        flagged_faulty:
+          type: string
+          example: 2021-11-17T13:13:56.000Z
+          description: Is null if the sensor is working normal. Has a datetime (=string) if the sensor has been flagged faulty.
+
+        createdAt:
+          type: string
+          example: 2021-11-17T13:13:56.000Z
+
+        updatedAt:
+          type: string
+          example: 2021-11-17T13:13:56.000Z
+
+  responses:
+    NotFound:
+      description: The resource was not found with the given ID.
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:   
+              message:
+                type: string
+    
+    ServerError:
+      description: The server encountered an error.
+      content: 
+        application/json:
+          schema:
+            type: object
+            properties:   
+              message:
+                type: string
+
+    InvalidRequest:
+      description: The request is not valid.
+      content: 
+        application/json:
+          schema:
+            type: object
+            properties:   
+              message:
+                type: string
