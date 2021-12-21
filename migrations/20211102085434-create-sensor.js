@@ -29,16 +29,10 @@ module.exports = {
       updatedAt: {
         allowNull: false,
         type: Sequelize.DATE
-      },
-      indexes: [
-        {
-          name: 'sensor_id',
-          fields: ['x_coordinate', 'y_coordinate'],
-          where: {
-            status: 'public'
-          }
-        },
-      ]
+      }
+    })
+    .then(() => {
+      return queryInterface.sequelize.query('ALTER TABLE "Sensors" ADD CONSTRAINT "sensor_id" PRIMARY KEY ("x_coordinate", "y_coordinate")');
     })
   },
   down: (queryInterface, Sequelize) => {
