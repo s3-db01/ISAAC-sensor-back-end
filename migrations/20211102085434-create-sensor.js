@@ -9,6 +9,7 @@ module.exports = {
         type: Sequelize.INTEGER
       },
       floor_id: {
+        allowNull: false,
         type: Sequelize.INTEGER
       },
       x_coordinate: {
@@ -29,7 +30,10 @@ module.exports = {
         allowNull: false,
         type: Sequelize.DATE
       }
-    });
+    })
+    .then(() => {
+      return queryInterface.sequelize.query("ALTER TABLE Sensors ADD CONSTRAINT sensor_id UNIQUE(x_coordinate, y_coordinate)");
+    })
   },
   down: (queryInterface, Sequelize) => {
     return queryInterface.dropTable('Sensors');
