@@ -32,7 +32,7 @@ module.exports = {
       }
     })
     .then(() => {
-      return queryInterface.sequelize.query('ALTER TABLE "Sensors" ADD CONSTRAINT "sensor_id" PRIMARY KEY ("x_coordinate", "y_coordinate")');
+      return queryInterface.sequelize.query("ALTER TABLE Sensors ADD CONSTRAINT sensor_id PRIMARY KEY (x_coordinate,y_coordinate)");
     })
   },
   down: (queryInterface, Sequelize) => {
