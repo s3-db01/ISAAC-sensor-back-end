@@ -5,6 +5,7 @@ module.exports = {
       id: {
         allowNull: false,
         autoIncrement: true,
+        primaryKey: true,
         type: Sequelize.INTEGER
       },
       floor_id: {
@@ -31,7 +32,7 @@ module.exports = {
       }
     })
     .then(() => {
-      return queryInterface.sequelize.query("ALTER TABLE Sensors ADD CONSTRAINT sensor_id PRIMARY KEY (x_coordinate,y_coordinate)");
+      return queryInterface.sequelize.query("CREATE UNIQUE CLUSTERED INDEX sensor_id ON TABLE (x_coordinate,y_coordinate)");
     })
   },
   down: (queryInterface, Sequelize) => {
