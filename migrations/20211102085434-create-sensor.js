@@ -32,7 +32,7 @@ module.exports = {
       }
     })
     .then(() => {
-      return queryInterface.sequelize.query("CREATE UNIQUE CLUSTERED INDEX sensor_id ON TABLE (x_coordinate,y_coordinate)");
+      return queryInterface.sequelize.query("ALTER TABLE Sensors ADD CONSTRAINT sensor_id UNIQUE(x_coordinate, y_coordinate)");
     })
   },
   down: (queryInterface, Sequelize) => {
