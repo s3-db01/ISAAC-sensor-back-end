@@ -9,6 +9,7 @@ module.exports = {
         type: Sequelize.INTEGER
       },
       floor_id: {
+        allowNull: false,
         type: Sequelize.INTEGER
       },
       x_coordinate: {
@@ -28,8 +29,17 @@ module.exports = {
       updatedAt: {
         allowNull: false,
         type: Sequelize.DATE
-      }
-    });
+      },
+      indexes: [
+        {
+          name: 'sensor_id',
+          fields: ['x_coordinate', 'y_coordinate'],
+          where: {
+            status: 'public'
+          }
+        },
+      ]
+    })
   },
   down: (queryInterface, Sequelize) => {
     return queryInterface.dropTable('Sensors');
